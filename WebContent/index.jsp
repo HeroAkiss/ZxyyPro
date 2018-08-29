@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+ <h1>hello</h1>
  <jsp:forward page="/jumps/goLoginPage.do"></jsp:forward> 
 </body>
 </html>
