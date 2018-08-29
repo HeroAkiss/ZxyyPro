@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hch.dao.XtUserMapper" >
+  <resultMap id="BaseResultMap" type="com.hch.model.XtUser" >
+    <id column="xt_user_id" property="xtUserId" jdbcType="VARCHAR" />
+    <result column="xt_user_create_id" property="xtUserCreateId" jdbcType="VARCHAR" />
+    <result column="xt_user_name" property="xtUserName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="contactnumber" property="contactnumber" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.hch.model.VoUserPerson" id="peopleName">
+    <id column="xt_user_id" property="xtUserId" jdbcType="VARCHAR" />
+    <result column="xt_person_name" property="xtPerName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    xt_user_id, xt_user_create_id, xt_user_name, password, create_date, contactnumber, 
+    state
+  </sql>
+ 
+   <select id="selectZBpeople" parameterType="java.lang.String" resultMap="peopleName">
+   select a.xt_user_id,b.xt_person_name from xt_user a LEFT JOIN xt_people b ON a.xt_user_id=b.xt_user_id
+    where b.state=#{state,jdbcType=VARCHAR};
+   </select>
+ 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from xt_user
+    where xt_user_id = #{xtUserId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from xt_user
+    where xt_user_id = #{xtUserId,jdbcType=VARCHAR}
+  </delete>
+  <!-- 登录 -->
+  <select id="selectByuser" resultMap="BaseResultMap" parameterType="com.hch.model.XtUser">
+  select
+  <include refid="Base_Column_List" />
+  from  xt_user   where xt_user_name = #{xtUserName,jdbcType=VARCHAR} and  password = #{password,jdbcType=VARCHAR}
+  </select>
+  <!-- 名字验证 -->
+  <select id="selByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
+  select 
+  <include refid="Base_Column_List" />
+  from xt_user
+  where xt_user_name=#{xtUserName,jdbcType=VARCHAR}
+  </select>
+  <!-- 账户的下拉列表 -->
+  <select id="userXiaLa" resultMap="BaseResultMap" resultType="java.lang.String">
+  select
+  <include refid="Base_Column_List"></include>
+  from xt_user
+  where state=#{state,jdbcType=VARCHAR}
+  </select>
+  <!-- 验证密码 -->
+  <select id="checkPwd" parameterType="com.hch.model.XtUser" resultMap="BaseResultMap">
+  select
+  <include refid="Base_Column_List"></include>
+  from xt_user
+  where xt_user_id=#{xtUserId,jdbcType=VARCHAR} and password=#{password,jdbcType=VARCHAR}
+  </select>
+  <update id="updatePwd" parameterType="com.hch.model.XtUser">
+  update xt_user set password=#{password,jdbcType=VARCHAR}
+   where xt_user_id=#{xtUserId,jdbcType=VARCHAR}
+  </update>
+  <update id="updatePeState0" parameterType="java.lang.String">
+   update xt_people set  state='0'
+   where xt_user_id=#{xtuserId,jdbcType=VARCHAR}
+  </update>
+   <update id="updatePeState1" parameterType="java.lang.String">
+   update xt_people set  state='1'
+   where xt_user_id=#{xtuserId,jdbcType=VARCHAR}
+  </update>
+</mapper>
