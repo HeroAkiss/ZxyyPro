@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hch.model.VoUserPerson;
 import com.hch.model.XtUser;
@@ -26,6 +27,15 @@ import com.hch.service.UserService;
 public class JumpController {
 	@Autowired
 	private UserService ua;
+	
+//跳转到拍单表
+	@RequestMapping(value="/paidan.do")
+	public String pandan(@RequestParam("uids")String uid,HttpServletRequest request)
+	{
+		request.setAttribute("uid",uid);
+		System.out.println(uid);
+	  return "paidan/paidanForm";	
+	}
 //跳转到用户登录	
 @RequestMapping(value="/goLoginPage.do")
 public String loginIndex()

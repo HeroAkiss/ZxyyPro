@@ -62,9 +62,17 @@
 		</tr>
 
 	</table>
-     <button onclick="savePriel()">点击</button>
+     <button onclick="savePriel()">人员调动</button>
+    <a class="btn btn-default" href="#" role="button" onclick="ulrHtml()">派单</a>
+  
+
+            
+
+
+
+
      <script type="text/javascript">
-      
+      //更新用户派单状态
      function savePriel(){
          var prirelLeftId = document.getElementById("left");
          var prirelLeftValues = new Array();
@@ -101,7 +109,43 @@
              }
          });
     }
+     //自动加载
+     $(document).ready(function(){
+         change();
+   
+    	});
      
+    
+     
+     function paidan()
+     {
+ 
+    	 var options=$("#left option:selected"); //获取选中的项
+    	 var uid=options.val();
+    	 $("#uid").val(uid);
+         $("#paidanbiao").modal("show");
+     }
+     
+     function change(){
+         document.getElementById("left")[0].selected=true;
+    }
+     
+   
+
+	 function ulrHtml() {
+		 var options=$("#left option:selected"); //获取选中的项
+    	 var uid=options.val();
+         var toUrl = "<%=path%>/jumps/paidan.do?uids=" + uid;
+         window.open(toUrl);
+     }
+	 
      </script>
+     
+      
+   
+     
+       
+   
+     
 </body>
 </html>
